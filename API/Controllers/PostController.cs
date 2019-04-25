@@ -60,6 +60,7 @@ namespace API.Controllers
 
             post.Title = item.Title;
             post.Content = item.Content;
+            post.Creation = item.Creation;
 
             PostItems.Update(post);
             return new NoContentResult();
