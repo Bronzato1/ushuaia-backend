@@ -61,7 +61,7 @@ namespace API
         {
             // loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             // loggerFactory.AddDebug();
-
+            app.UseStaticFiles();
             app.UseCors("AureliaSPA");
             app.UseMvc();
         }

@@ -1,11 +1,15 @@
 using System;
 using System.Web;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using ImageMagick;
 
 namespace API.Controllers
 {
-    public class FroalaApiController: Controller
+    [EnableCors("AureliaSPA")]
+    [Route("fapi/[controller]/[action]")]
+    public class FroalaapiController: Controller
     {
         public IActionResult UploadImage()
         {
@@ -163,9 +167,11 @@ namespace API.Controllers
 
         public ActionResult DeleteImage()
         {
-            try
+            try 
             {
-                FroalaEditor.Image.Delete(HttpContext.Request.Form["src"]);
+                string urlPath = HttpContext.Request.Form["src"];
+                string fileName = System.IO.Path.GetFileName(urlPath);
+                FroalaEditor.Image.Delete("uploads/" + fileName);
                 return Json(true);
             }
             catch (Exception e)
