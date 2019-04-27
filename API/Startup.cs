@@ -47,7 +47,6 @@ namespace API
 
             // Add framework services.
             services.AddMvc(); //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
             services.AddDbContext<PostContext> (options => options.UseSqlite("Data Source=blogging.db"));            
             services.AddScoped<IPostRepository, PostRepository>();
             

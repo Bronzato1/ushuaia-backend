@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
-using System.Text.RegularExpressions;
-using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 using API.Models;
 
 namespace API.Controllers
@@ -103,15 +105,39 @@ namespace API.Controllers
         {
             string webRootPath = _hostingEnvironment.WebRootPath;
             string uploadPath = System.IO.Path.Combine(webRootPath, "uploads");
+            string exportPath = System.IO.Path.Combine(webRootPath, "exports");
+            string jsonFile = System.IO.Path.Combine(uploadPath, "posts.json");
             string zipName = string.Format("export-{0}.zip", DateTime.Now.ToString("yyyy-MM-dd"));
-            string zipPath = System.IO.Path.Combine(webRootPath, "exports", zipName);
+            string zipFile = System.IO.Path.Combine(exportPath, zipName);
+            
+            var posts = PostItems.GetAll();
 
-            if (System.IO.File.Exists(zipPath))
-                System.IO.File.Delete(zipPath);
+            Newtonsoft.Json.Linq.JArray json = new JArray(
+                posts.Select(p => new JObject
+                {
+                    { "Title", p.Title},
+                    { "Creation", p.Creation},
+                    { "Content", p.Content}
+                })
+            );
 
-            ZipFile.CreateFromDirectory(uploadPath, zipPath);
+            if (System.IO.File.Exists(jsonFile))
+                System.IO.File.Delete(jsonFile);
 
-            var stream = new System.IO.FileStream(zipPath, System.IO.FileMode.Open);
+            System.IO.File.WriteAllText(jsonFile, json.ToString());
+
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(exportPath);
+
+            if (System.IO.File.Exists(zipFile))
+                System.IO.File.Delete(zipFile);
+
+            ZipFile.CreateFromDirectory(uploadPath, zipFile);
+
+            if (System.IO.File.Exists(jsonFile))
+                System.IO.File.Delete(jsonFile);
+
+            var stream = new System.IO.FileStream(zipFile, System.IO.FileMode.Open);
+            
             return File(stream, "application/octetstream", zipName);
         }
     }
