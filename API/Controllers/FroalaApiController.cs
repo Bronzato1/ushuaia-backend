@@ -8,8 +8,8 @@ using ImageMagick;
 namespace API.Controllers
 {
     [EnableCors("AureliaSPA")]
-    [Route("fapi/[controller]/[action]")]
-    public class FroalaapiController: Controller
+    [Route("api/[controller]/[action]")]
+    public class FroalaController: Controller
     {
         public IActionResult UploadImage()
         {
