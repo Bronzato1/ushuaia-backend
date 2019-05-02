@@ -35,7 +35,7 @@ namespace API
             corsBuilder.AllowAnyHeader();
             corsBuilder.AllowAnyMethod();
             corsBuilder.AllowCredentials();
-            corsBuilder.WithOrigins("http://localhost:9000");
+            corsBuilder.WithOrigins("http://localhost:9000", "https://mysuperstorage.z6.web.core.windows.net");
             //corsBuilder.AllowAnyOrigin();
 
             services.AddCors(options =>
@@ -47,7 +47,9 @@ namespace API
 
             // Add framework services.
             services.AddMvc(); //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<PostContext> (options => options.UseSqlite("Data Source=blogging.db"));            
+            string appRoot = Environment.CurrentDirectory;
+            string database = System.IO.Path.Combine(appRoot + @"\", @"App_Data\blogging.db");
+            services.AddDbContext<PostContext> (options => options.UseSqlite("Data Source=" + database));
             services.AddScoped<IPostRepository, PostRepository>();
             
             //Transient objects are always different; a new instance is provided to every controller and every service.
