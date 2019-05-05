@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,12 @@ namespace API.Controllers
     public class PostController : Controller
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly PostContext _postcontext;
 
-        public PostController(IHostingEnvironment hostingEnvironment, IPostRepository postItems)
+        public PostController(IHostingEnvironment hostingEnvironment, PostContext postContext, IPostRepository postItems)
         {
             _hostingEnvironment = hostingEnvironment;
+            _postcontext = postContext;
             PostItems = postItems;
         }
 
@@ -104,7 +107,6 @@ namespace API.Controllers
             return new NoContentResult();
         }
 
-        [Route("api/[controller]/DownloadZip")]
         [HttpGet("DownloadZip")]
         public IActionResult DownloadZip()
         {
@@ -147,7 +149,6 @@ namespace API.Controllers
             return File(memoryStream, "application/octetstream", zipFileName);
         }
 
-        [Route("api/[controller]/UploadZip")]
         [HttpPost("UploadZip")]
         public async Task<IActionResult> UploadZip(IFormFile file)
         {
@@ -207,6 +208,12 @@ namespace API.Controllers
                 System.IO.File.Delete(importFilePath);
 
             return Ok(new { count = elements.Count });
+        }
+
+        [HttpGet("ClearAllData")]
+        public IActionResult ClearAllData() {
+            var rowsAffectedCount = _postcontext.Database.ExecuteSqlCommand("delete from PostItems");
+            return Ok(new { count = rowsAffectedCount });
         }
     }
 }
