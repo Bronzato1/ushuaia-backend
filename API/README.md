@@ -1,7 +1,3 @@
-Blog explicatif et code source: [cliquez ici](http://www.codingflow.net/building-your-first-web-api-with-asp-net-core-and-visual-studio-code/).
-
-Quelques remarques:
-
 Dans ce projet on cible le framework **netcoreapp2.2** donc vérifier à deux endroits:
 
 * Dans `launch.json` 
@@ -14,7 +10,8 @@ Dans ce projet on cible le framework **netcoreapp2.2** donc vérifier à deux en
 
 S'assurer que tout est OK en supprimant les répertoires _bin_ et _obj_ et compiler (build) `CTRL`+`SHIFT`+`B` 
 
-Et pour savoir si le .NET Core est installé sur la machine lancer la commande: **dotnet --info**
+Et pour savoir si le .NET Core est installé sur la machine lancer la commande: `dotnet --info`
+
 Pour installer le .NET Core: le télécharger en version Build - SDK - x64
 
 ------
