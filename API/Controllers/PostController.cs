@@ -138,15 +138,9 @@ namespace API.Controllers
                 archive.CreateEntryFromFile(jsonFilePath, jsonFileName);
             }
 
-            var fileStream = new System.IO.FileStream(zipFilePath, System.IO.FileMode.Open);
-            var memoryStream = new System.IO.MemoryStream();
-            fileStream.CopyTo(memoryStream);
-            fileStream.Close();
-            memoryStream.Position = 0;
-
+            byte[] contents = System.IO.File.ReadAllBytes(zipFilePath);
             foreach (var file in di.EnumerateFiles("export*.*")) { file.Delete(); }
-
-            return File(memoryStream, "application/octetstream", zipFileName);
+            return File(contents, "application/octetstream");
         }
 
         [HttpPost("UploadZip")]
