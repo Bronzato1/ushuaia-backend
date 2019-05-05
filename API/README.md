@@ -28,5 +28,5 @@ dotnet ef database update
 - suppr du répertoire publish
 - dotnet publish API -c Release -o ./publish
 - copier/coller le rép App_Data dans le rép publish
-- clic-droit sur le répertoire publish et choisir Deploy to web app
+- clic-droit sur le répertoire publish et choisir Deploy to web app > ushuaiaApp
 

@@ -35,7 +35,7 @@ namespace API
             corsBuilder.AllowAnyHeader();
             corsBuilder.AllowAnyMethod();
             corsBuilder.AllowCredentials();
-            corsBuilder.WithOrigins("http://localhost:9000", "https://mysuperstorage.z6.web.core.windows.net");
+            corsBuilder.WithOrigins("http://localhost:9000", "https://ushuaia.z28.web.core.windows.net");
             //corsBuilder.AllowAnyOrigin();
 
             services.AddCors(options =>
